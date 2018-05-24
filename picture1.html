@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>图像定损</title>
+    <!-- Bootstrap -->
+    <link href="bootstrap.min.css" rel="stylesheet">
+    <!-- 自定义css -->
+    <link href="style.css" rel="stylesheet">
+  </head>
+  <body>
+    <div class="title"><a class="left-return" href="index.html">返回</a>图像定损</div>
+    <div class="camera" id="camera" style="display: none;">
+      <canvas id="cameraCanvas" class="cameraCanvas"></canvas>
+      <div class="camera-video">
+        <video id="cameraVideo" autoplay></video>
+      </div>
+      <div class="camera-toolbar">
+        <div class="bar">
+          <div class="change-camera-btn" id="change-camera-btn">切换摄像头</div>
+          <div class="camera-btn" id="cameraBtn"></div>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <h2 class="sub-title">拍摄/上传车损图片</h2>
+
+      <div class="img-group-title">中景图</div>
+      <div class="img-group" id="zhongjing">
+      </div>
+
+      <div class="img-group-title">损伤细节</div>
+      <div class="img-group" id="xijie">
+      </div>
+
+      
+      
+    </div>
+    <dir class="container">
+      <a href="picture-result.html" class="btn upload-btn btn-lg">确认上传</a>
+    </dir>
+      
+    
+    <!-- jQuery -->
+    <script src="jquery.min.js"></script>
+    <script src="ebiz-camera.js"></script>
+    <script type="text/javascript">
+      var zhongjingImageArray=[];
+      var xijieImageArray=[];
+      function flushZhongjing(){
+        $("#zhongjing").html("");
+
+        $.each(zhongjingImageArray,function(index,item){
+          var zhongjingImg = new Image();
+          zhongjingImg.src = item;
+          $("#zhongjing").append(zhongjingImg);
+          $(zhongjingImg).addClass("img-group-img");
+        });
+
+        var addZhongjingImg = new Image();
+        addZhongjingImg.src="img.png";
+        $("#zhongjing").append(addZhongjingImg);
+
+        $(addZhongjingImg).addClass("img-group-img");
+
+        $(addZhongjingImg).bind("click",function(){
+          showCamera(function(src){
+            zhongjingImageArray.push(src);
+            flushZhongjing();
+          });
+        });
+        
+      }
+
+
+      function flushXijie(){
+        $("#xijie").html("");
+
+        $.each(xijieImageArray,function(index,item){
+          var xijieImg = new Image();
+          xijieImg.src = item;
+          $("#xijie").append(xijieImg);
+          $(xijieImg).addClass("img-group-img");
+        });
+
+        var addXijieImg = new Image();
+        addXijieImg.src="img.png";
+        $("#xijie").append(addXijieImg);
+
+        $(addXijieImg).addClass("img-group-img");
+
+        $(addXijieImg).bind("click",function(){
+          showCamera(function(src){
+            xijieImageArray.push(src);
+            flushXijie();
+          });
+        });
+        
+      }
+
+      $(function(){
+        
+        flushZhongjing();
+        flushXijie();
+      });
+    </script>
+  </body>
+</html>

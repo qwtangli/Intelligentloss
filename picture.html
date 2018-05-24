@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+ <title>图像定损</title>
+ <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+ <script>
+ 	var objid;
+ 	var flag = 0;
+  $(function() {
+   $(".tab a").click(function() {
+   	if ($(this).attr("id") == "carBadDeatil") {
+   		if (flag == 0) {
+   			$("#toast").show();
+   			return;
+   		}
+   	}
+    $(this).addClass('curr').siblings().removeClass('curr');
+    var index = $(this).index();
+    number = index;
+    $('.nav .content li').hide();
+    $('.nav .content li:eq(' + index + ')').show();
+   });
+   
+           $(".img").bind("click",function(){
+           	myclass = $(this).attr("value");
+					$("." + myclass).click();
+					objid = $(this).attr("id");
+        });
+  })
+  
+  function myalert (text, title, callbackOk) {
+        if (typeof title === 'function') {
+            callbackOk = arguments[1];
+            title = undefined;
+        }
+        return $.modal({
+            text: text || '',
+            title: typeof title === 'undefined' ? "确定" : title,
+            buttons: [ {text: "好", bold: true, onClick: callbackOk} ]
+        });
+    	};
+      function setImagePreview(obj) {  
+            var preview, img_txt, localImag, file_head = obj,  
+//          document.getElementById("file_head")
+            picture = file_head.value;  
+            if (!picture.match(/.jpg|.gif|.png|.bmp/i)) return myalert("您上传的图片格式不正确，请重新选择！"),  
+            !1;  
+            if (preview = document.getElementById(objid), file_head.files && file_head.files[0]) preview.style.display = "block",  
+                preview.style.width = "100%",  
+                preview.src = window.navigator.userAgent.indexOf("Chrome") >= 1 || window.navigator.userAgent.indexOf("Safari") >= 1 ? window.webkitURL.createObjectURL(file_head.files[0]) : window.URL.createObjectURL(file_head.files[0]);  
+            else {  
+                file_head.select(),  
+                file_head.blur(),  
+                img_txt = document.selection.createRange().text,  
+                localImag = document.getElementById("alllocalImag"),  
+                localImag.style.width = "100%";  
+                try {  
+                    localImag.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale)",  
+                    localImag.filters.item("DXImageTransform.Microsoft.AlphaImageLoader").src = img_txt  
+                } catch(f) {  
+                    return myalert("您上传的图片格式不正确，请重新选择！"),  
+                    !1  
+                }  
+                preview.style.display = "none",  
+                document.selection.empty()  
+            } 
+            
+            
+            if (objid == "img") {
+            	flag = 1;
+            	$("#toast").hide();
+            }
+            preview.style.border = "none";
+            preview.style.backgroundColor = "transparent";
+            preview.style.padding = "0";
+            return
+            !0  
+        }
+      var deatilId = 1;
+      function setImageDeatil(obj) {  
+            var preview, img_txt, localImag, file_head = obj,  
+//          document.getElementById("file_head")
+            picture = file_head.value;  
+//          localImag = document.getElementById("localImag");  
+			localImag = $("#localImag");
+            if (!picture.match(/.jpg|.gif|.png|.bmp/i)) return myalert("您上传的图片格式不正确，请重新选择！"),  
+            !1;  
+//          if (preview = document.getElementById("img"), file_head.files && file_head.files[0]) preview.style.display = "block",  
+                //preview.style.width = "100%";
+                var src = window.navigator.userAgent.indexOf("Chrome") >= 1 || 
+                window.navigator.userAgent.indexOf("Safari") >= 1 ? 
+                window.webkitURL.createObjectURL(file_head.files[0]) : 
+                window.URL.createObjectURL(file_head.files[0]);
+                var img = document.createElement("img");
+                img.style.width = "86px";
+                img.style.height = "79px";
+                img.style.border = "none";
+            	img.style.backgroundColor = "transparent";
+            	img.style.padding = "0";
+            	img.src = src;
+            	$(img).addClass("img");
+            	img.value = "all"
+            	img.id = "img" + deatilId;
+            	deatilId = deatilId + 1;
+            	localImag.prepend(img);
+//          else {  
+//              file_head.select(),  
+//              file_head.blur(),  
+//              img_txt = document.selection.createRange().text,  
+//              localImag.style.width = "100%";  
+//              try {  
+//                  localImag.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale)",  
+//                  localImag.filters.item("DXImageTransform.Microsoft.AlphaImageLoader").src = img_txt  
+//              } catch(f) {  
+//                  return myalert("您上传的图片格式不正确，请重新选择！"),  
+//                  !1  
+//              }  
+//              preview.style.display = "none",  
+//              document.selection.empty()  
+//          } 
+            return
+            !0  
+        }
+ </script>
+ <style>
+  *{
+   margin: 0;
+   padding: 0;
+  }
+  div, input, textarea, button, a {
+   -webkit-tap-highlight-color: rgba(0,0,0,0);
+  }
+  ul, li, ol{
+   list-style: none;
+  }
+  a {
+   color: #323232;
+   outline-style: none;
+   text-decoration: none;
+  }
+  .border-b {
+   position: relative;
+  }
+  .border-b:after {
+   top: auto;
+   bottom: 0;
+  }
+  .border-t:before, .border-b:after {
+   content: '';
+   position: absolute;
+   left: 0;
+   background: #ddd;
+   right: 0;
+   height: 1px;
+   -webkit-transform: scaleY(0.5);
+   transform: scaleY(0.5);
+   -webkit-transform-origin: 0 0;
+   transform-origin: 0 0;
+  }
+  .nav {
+   background-color: #fff;
+   text-align: center;
+  }
+  .nav .tab {
+   width: 100%;
+   position: relative;
+   overflow: hidden;
+  }
+  .tab a {
+   float: left;
+   width: 49%;
+   height: 2.56rem;
+   line-height:2.56rem;
+   display: inline-block;
+/*   border-right: 1px solid #e1e1e1;*/
+  }
+  .tab a:last-child {
+   border-right: 0;
+  }
+  .tab .curr {
+   border-bottom: 2px solid #fc7831;
+   color: #fc7831;
+  }
+  .content ul li {
+   display: none;
+   padding: 3%;
+   width: 94%;
+  }
+  .title{
+  	color: #fff;
+    background-color: #ed7d31;
+    text-align: center;
+    font-size: 20px;
+    height: 40px;
+    line-height: 40px;
+  }
+  .left-return{
+  	float: left;
+    color: #fff;
+    text-decoration: none;
+  }
+  .h1, .h2, .h3, h1, h2, h3 {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    color: #f4b183;
+   }
+   .upload-img {
+    display: block;
+    margin: 60px auto;
+    max-width: 99%;
+    border: 1px solid #E4E2DF;
+    background-color: #F4F3F2;
+    padding: 50px 80px;
+    border-radius: 5px;
+	}
+	.upload-btn {
+    color: #fff;
+    background-color: #ed7d31;
+    /* background: url(img/矩形1.png); */
+    width: 84.6%;
+    border-radius: 0px;
+	}
+.btn {
+    display: inline-block;
+    padding: 6px 12px;
+    margin-bottom: 0;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.42857143;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-image: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+.btn-group-lg>.btn, .btn-lg {
+    padding: 10px 16px;
+    font-size: 18px;
+    line-height: 1.3333333;
+    border-radius: 6px;
+    margin-top: 50%;
+}
+#localImag img{
+	border: 1px solid #E4E2DF;
+    background-color: #F4F3F2;
+    padding: 20px;
+    border-radius: 5px;
+    margin: 5px;
+}
+#localImag{
+	display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: normal;
+}
+ </style>
+</head>
+<body>
+<div class="title"><a class="left-return" href="index.html"><img style="margin-left: 10px;" src="img/返回.png"></a>图像定损</div>
+<div class="nav">
+ <div class="tab border-b">
+  <a href="javascript:;" rel="external nofollow" rel="external nofollow" class="curr">中景图</a>
+  <a href="javascript:;" id="carBadDeatil" rel="external nofollow" rel="external nofollow" >损伤细节</a>
+ </div>
+ <div class="content">
+  <ul>
+   <li style="display: block">    <div class="container vin">
+      <h2 class="sub-title">拍摄车辆中景图</h2>
+      <img src="img/拍照.png" value="all" id="img" class="img upload-img">
+    	<div data-role="fieldcontain">  
+        <div id="alllocalImag">  
+            <img id="preview" width="-1" height="-1" style="display: none" />  
+        </div>  
+   		</div> 
+   		<div>
+   			<strong id="toast" style="color: red;display: none;">请先上传中景图片</strong>
+   		</div>
+      <input style="display: none" type="file" accept="image/*" capture="camera" 
+      	name="file_head" class="all" onchange="javascript:setImagePreview(this);" />
+    </div></li>
+   <li>    
+   	<div class="container vin">
+      <h2 class="sub-title">拍摄车辆损伤细节</h2>
+        <div id="localImag" >
+        	<img src="img/拍照.png" value="deatil" class="img" value="">
+        </div>  
+   		</div> 
+      <input style="display: none" type="file"  accept="image/*" capture="camera" 
+      	name="file_head" class="deatil" onchange="javascript:setImageDeatil(this);" />
+      <a href="picture-result.html" class="btn upload-btn btn-lg">确认上传</a>
+    </div></li>
+  </ul>
+ </div>
+</div>
+</body>
+</html>

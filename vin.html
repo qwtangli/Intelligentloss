@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>VIN车辆识别</title>
+    <!-- Bootstrap -->
+    <link href="bootstrap.min.css" rel="stylesheet">
+    <!-- 自定义css -->
+    <link href="style.css" rel="stylesheet">
+  </head>
+  <body>
+    <div class="title"><a class="left-return" href="index.html"><img style="margin-left: 10px;" src="img/返回.png"></a>VIN车辆识别</div>
+    
+    <div class="camera" id="camera" style="display: none;">
+      <canvas id="cameraCanvas" class="cameraCanvas"></canvas>
+      <div class="camera-video">
+        <video id="cameraVideo" autoplay></video>
+      </div>
+      <div class="camera-toolbar">
+        <div class="bar">
+          <div class="change-camera-btn" id="change-camera-btn">切换摄像头</div>
+          <div class="camera-btn" id="cameraBtn"></div>
+        </div>
+      </div>
+    </div>
+    <div class="container vin">
+      <h2 class="sub-title">拍摄车辆VIN码</h2>
+      <img src="img/拍照.png"  id="img" class="upload-img">
+    	<div data-role="fieldcontain">  
+        <div id="localImag">  
+            <img id="preview" width="-1" height="-1" style="display: none" />  
+        </div>  
+   		</div> 
+      <input style="display: none" type="file" accept="image/*" capture="camera" 
+      	name="file_head" id="file_head" onchange="javascript:setImagePreview();" />
+      <a href="vin-result.html" class="btn upload-btn btn-lg">确认上传</a>
+    </div>
+    
+    <!-- jQuery -->
+    <script src="jquery.min.js"></script>
+    <script src="ebiz-camera.js"></script>
+    <script type="text/javascript">
+      $(function(){
+        $("#img").bind("click",function(){
+//        showCamera(function(src){
+//          img.src = src;
+//        });
+					$("#file_head").click();
+        });
+      });
+      
+      function myalert (text, title, callbackOk) {
+        if (typeof title === 'function') {
+            callbackOk = arguments[1];
+            title = undefined;
+        }
+        return $.modal({
+            text: text || '',
+            title: typeof title === 'undefined' ? "确定" : title,
+            buttons: [ {text: "好", bold: true, onClick: callbackOk} ]
+        });
+    	};
+      function setImagePreview() {  
+            var preview, img_txt, localImag, file_head = document.getElementById("file_head"),  
+            picture = file_head.value;  
+            if (!picture.match(/.jpg|.gif|.png|.bmp/i)) return myalert("您上传的图片格式不正确，请重新选择！"),  
+            !1;  
+            if (preview = document.getElementById("img"), file_head.files && file_head.files[0])
+            		preview.style.display = "block",
+                preview.style.width = "206px",  
+                preview.style.height = "139px",  
+								//preview.style.width = "100%",
+                preview.src = window.navigator.userAgent.indexOf("Chrome") >= 1 || window.navigator.userAgent.indexOf("Safari") >= 1 ? window.webkitURL.createObjectURL(file_head.files[0]) : window.URL.createObjectURL(file_head.files[0]);  
+            else {  
+                file_head.select(),  
+                file_head.blur(),  
+                img_txt = document.selection.createRange().text,  
+                localImag = document.getElementById("localImag"),  
+                localImag.style.width = "206px",  
+                localImag.style.height = "139px"
+                ;
+                try {  
+                    localImag.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale)",  
+                    localImag.filters.item("DXImageTransform.Microsoft.AlphaImageLoader").src = img_txt  
+                } catch(f) {  
+                    return myalert("您上传的图片格式不正确，请重新选择！"),  
+                    !1  
+                }  
+                preview.style.display = "none",  
+                document.selection.empty()  
+            }
+            preview.style.border = "none";
+            preview.style.backgroundColor = "transparent";
+            preview.style.padding = "0";
+            return
+            !0  
+        }
+    </script>
+  </body>
+</html>
